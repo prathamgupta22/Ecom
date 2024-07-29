@@ -1,15 +1,17 @@
-import { View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import React from "react";
-import Footer from "./Footer";
 import Header from "./Header";
-
-const Layout = ({ children }) => {
+import Banner from "../Banner/Banner";
+import Products from "../Products/Products";
+import Categories from "./../category/Categories";
+const Layout = () => {
   return (
-    <>
+    <ScrollView>
       <Header />
-      <View>{children}</View>
-      <Footer />
-    </>
+      <Categories />
+      <Banner />
+      <Products />
+    </ScrollView>
   );
 };
 

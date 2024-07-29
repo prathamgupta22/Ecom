@@ -6,16 +6,22 @@ import {
   ScrollView,
 } from "react-native";
 import React from "react";
-import { categoriesData } from "../data/CategoriesData";
 import { FontAwesome } from "react-native-vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { categoriesData } from "./../../data/CategoriesData";
 
 const Categories = () => {
+  const navigation = useNavigation();
+
   return (
     <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         {categoriesData?.map((item) => (
           <View key={item._id}>
-            <TouchableOpacity style={styles.catContainer}>
+            <TouchableOpacity
+              style={styles.catContainer}
+              onPress={() => navigation.navigate(item.path)}
+            >
               <FontAwesome name={item.icon} style={styles.caticon} />
               <Text style={styles.catTitle}>{item.name}</Text>
             </TouchableOpacity>
