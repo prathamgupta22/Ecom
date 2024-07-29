@@ -9,8 +9,10 @@ import React, { useState } from "react";
 import { CartData } from "./../../data/CartData";
 import PriceTable from "../../components/cart/PriceTable";
 import CartItem from "../../components/cart/CartItem";
+import { useNavigation } from "@react-navigation/native";
 
-const Cart = ({ navigation }) => {
+const Cart = () => {
+  const navigation = useNavigation();
   const [cartItems, setCartItems] = useState(CartData);
   return (
     <View style={{ backgroundColor: "#cccccc", flex: 1 }}>
@@ -35,7 +37,7 @@ const Cart = ({ navigation }) => {
             </View>
             <TouchableOpacity
               style={styles.btnCheckout}
-              onPress={() => navigation.navigate("checkout")}
+              onPress={() => navigation.navigate("CheckOut")}
             >
               <Text style={styles.btnCheckoutText}>CHECKOUT</Text>
             </TouchableOpacity>

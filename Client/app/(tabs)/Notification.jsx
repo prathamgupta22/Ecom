@@ -3,8 +3,10 @@ import React from "react";
 
 const Notification = () => {
   return (
-    <View>
-      <Text>Notification</Text>
+    <View
+      style={{ justifyContent: "center", alignItems: "center", height: "100%" }}
+    >
+      <Text>You don't have any notification</Text>
     </View>
   );
 };

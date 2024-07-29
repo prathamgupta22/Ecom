@@ -1,13 +1,15 @@
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 
 const _layout = () => {
   const tabIcon = (iconName) => {
     return <FontAwesome size={28} name={iconName} style={styles.caticon} />;
   };
 
+  const router = useRouter();
   return (
     <Tabs
       screenOptions={{
@@ -49,6 +51,7 @@ const _layout = () => {
           headerTitle: "Cart",
         }}
       />
+
       <Tabs.Screen
         name="Logout"
         options={{

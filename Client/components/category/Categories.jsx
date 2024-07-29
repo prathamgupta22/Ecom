@@ -7,8 +7,9 @@ import {
 } from "react-native";
 import React from "react";
 import { FontAwesome } from "react-native-vector-icons";
-import { useNavigation } from "@react-navigation/native";
+
 import { categoriesData } from "./../../data/CategoriesData";
+import { useNavigation } from "expo-router";
 
 const Categories = () => {
   const navigation = useNavigation();
