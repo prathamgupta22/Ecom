@@ -49,7 +49,10 @@ const Account = () => {
             <FontAwesome style={styles.btnText} name="bell" />
             <Text style={styles.btnText}>Notification</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => router.push("/Screens/AdminPanel")}
+          >
             <FontAwesome style={styles.btnText} name="windows" />
 
             <Text style={styles.btnText}>Admin Panel</Text>
