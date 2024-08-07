@@ -14,3 +14,14 @@ export const isAuth = async (req, res, next) => {
   req.user = await User.findById(decodeData._id);
   next();
 };
+
+//admin auth
+export const isAdmin = async (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return res.status(401).send({
+      success: false,
+      message: "admin only",
+    });
+  }
+  next();
+};

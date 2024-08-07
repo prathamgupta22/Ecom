@@ -1,6 +1,7 @@
 import { Products } from "./../models/product.model.js";
 import { getDataUri } from "./../utils/features.utils.js";
 import cloudinary from "cloudinary";
+import { Category } from "../models/category.model.js";
 
 export const getAllproductController = async (req, res) => {
   try {
@@ -54,13 +55,20 @@ export const createProductController = async (req, res) => {
   try {
     const { name, description, price, category, stock } = req.body;
 
-    //validation
-    // if (!name || description || price || category || stock) {
-    //   res.status(401).send({
-    //     success: false,
-    //     message: "Please provide all fields",
-    //   });
-    // }
+    const categoryDoc = await Category.findOne({ category });
+    if (!categoryDoc) {
+      return res.status(400).send({
+        success: false,
+        message: "Invalid category",
+      });
+    }
+    // Validate other fields
+    if (!name || !description || !price || !stock) {
+      return res.status(400).send({
+        success: false,
+        message: "Please provide all required fields",
+      });
+    }
     if (!req.file) {
       return res.status(500).send({
         success: false,
@@ -78,7 +86,7 @@ export const createProductController = async (req, res) => {
       name,
       description,
       price,
-      category,
+      category: categoryDoc._id,
       stock,
       images: [image],
     });
