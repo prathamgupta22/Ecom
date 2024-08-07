@@ -26,10 +26,14 @@ app.use(cookieParser());
 //import route
 import testRoutes from "./routes/test.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import productRoutes from "./routes/product.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
 
 //route
 app.use("/api/v1", testRoutes);
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/product", productRoutes);
+app.use("/api/v1/cat", categoryRoutes);
 
 app.get("/", (req, res) => {
   return res.status(200).send("<h1>Welcome to node server</h1>");
