@@ -6,9 +6,13 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputBox from "../../../components/Form/InputBox";
 import { useRouter } from "expo-router";
+
+//redux hooks
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../../redux/features/auth/userAction";
 
 const Login = () => {
   const router = useRouter();
@@ -17,14 +21,38 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  //hooks
+  const dispatch = useDispatch();
+  //global state
+  const { loading, error, message } = useSelector((state) => state.user);
+
   //login function
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       return alert("Please add email or password");
     }
-    alert("Login Successfull");
-    router.push("/(tabs)/Home");
+    try {
+      await dispatch(login(email, password));
+      if (!error) {
+        router.push("/(tabs)/Home");
+      }
+    } catch (err) {
+      alert();
+      // Optional: display an alert or some form of user feedback
+    }
   };
+
+  ///life cycle
+  useEffect(() => {
+    if (error) {
+      alert(error);
+      dispatch({ type: "clearError" });
+    }
+    if (message) {
+      alert(message);
+      dispatch({ type: "clearMessage" });
+    }
+  }, [error, message, dispatch]);
 
   return (
     <View style={styles.container}>

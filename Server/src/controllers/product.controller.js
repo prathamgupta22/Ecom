@@ -4,11 +4,18 @@ import cloudinary from "cloudinary";
 import { Category } from "../models/category.model.js";
 
 export const getAllproductController = async (req, res) => {
+  const { keyword, category } = req.query;
   try {
-    const products = await Products.find({});
+    const products = await Products.find({
+      name: {
+        $regex: keyword ? keyword : "",
+        $options: "i",
+      },
+    }).populate("category");
     res.status(200).send({
       success: true,
       message: "All products fetched successfully",
+      totalProducts: products.length,
       products,
     });
   } catch (error) {
@@ -16,6 +23,25 @@ export const getAllproductController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error in get all products API",
+      error,
+    });
+  }
+};
+
+//get top product
+export const getTopProductsController = async (req, res) => {
+  try {
+    const products = await Products.find({}).sort({ rating: -1 }).limit(3);
+    res.status(200).send({
+      success: true,
+      message: "top 3 products",
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error In Get TOP PRODUCTS API",
       error,
     });
   }
@@ -281,6 +307,69 @@ export const deleteProductController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error In Get DELETE Product IMAGE API",
+      error,
+    });
+  }
+};
+
+//create product review and comment
+export const productReviewController = async (req, res) => {
+  try {
+    const { comment, rating } = req.body;
+
+    // Find product
+    const product = await Products.findById(req.params.id);
+    if (!product) {
+      return res.status(404).send({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    // Check if already reviewed
+    const alreadyReviewed = product.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    );
+    if (alreadyReviewed) {
+      return res.status(400).send({
+        success: false,
+        message: "Product already reviewed",
+      });
+    }
+
+    // Create review object
+    const review = {
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+      user: req.user._id,
+    };
+
+    // passing review object to review array
+    product.reviews.push(review);
+    product.numReviews = product.reviews.length;
+    product.rating =
+      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      product.reviews.length;
+
+    // Save product
+    await product.save();
+
+    res.status(200).send({
+      success: true,
+      message: "Review added!",
+    });
+  } catch (error) {
+    console.log(error);
+    if (error.name === "CastError") {
+      return res.status(400).send({
+        success: false,
+        message: "Invalid ID",
+      });
+    }
+    res.status(500).send({
+      success: false,
+      message: "Error in review comment API",
       error,
     });
   }

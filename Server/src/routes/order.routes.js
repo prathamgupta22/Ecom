@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  changeOrderStatusController,
   createOrderController,
   getAllOrdersController,
   getMyOrdersCotroller,
@@ -23,6 +24,7 @@ router.post("/payments", isAuth, paymentsController);
 //ADMIN PART
 router.get("/admin/get-all-orders", isAuth, isAdmin, getAllOrdersController);
 
-// router.put("/admin/order/:id", isAuth, isAdmin, changeOrderStatusController);
+//change order status
+router.put("/admin/order/:id", isAuth, isAdmin, changeOrderStatusController);
 
 export default router;
